@@ -5,7 +5,9 @@ import {
   ListItemButton,
   ListItemText,
   styled,
-  Typography
+  Typography,
+  useMediaQuery,
+  useTheme
 } from "@mui/material";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
@@ -29,7 +31,6 @@ import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import { useLocation, useNavigate } from "react-router-dom";
-import { grey } from "@mui/material/colors";
 
 const drawerWidth = 240;
 
@@ -124,9 +125,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   // necessary for content to be below app bar
   ...theme.mixins.toolbar
 }));
-const Drawer = styled(MuiDrawer, {
-  shouldForwardProp: (prop) => prop !== "open"
-})(({ theme }) => ({
+const Drawer = styled(MuiDrawer)(({ theme }) => ({
   width: drawerWidth,
   flexShrink: 0,
   whiteSpace: "nowrap",
@@ -149,13 +148,25 @@ const Drawer = styled(MuiDrawer, {
   ]
 }));
 
-const SideBar = ({ open, handleDrawerClose, theme }) => {
+const SideBar = ({ open, handleDrawerClose }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const location = useLocation();
   const navigate = useNavigate();
-  console.log();
+  const handleNavigate = (path) => {
+    navigate(path);
+    if (isMobile) {
+      handleDrawerClose();
+    }
+  };
 
   return (
-    <Drawer variant="permanent" open={open}>
+    <Drawer
+      variant={isMobile ? "temporary" : "permanent"}
+      open={open}
+      onClose={handleDrawerClose}
+      ModalProps={{ keepMounted: true }}
+    >
       <DrawerHeader>
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === "rtl" ? (
@@ -172,11 +183,11 @@ const SideBar = ({ open, handleDrawerClose, theme }) => {
           width: open ? 88 : 40,
           height: open ? 88 : 40,
           my: 2,
-          border: "2px solid grey",
+          border: `2px solid ${theme.palette.divider}`,
           transition: "0.24s"
         }}
         alt="Karim Ahmed"
-        src="../../public/my-image.jpeg"
+        src="/my-image.jpeg"
       />
       <Typography
         align="center"
@@ -207,18 +218,16 @@ const SideBar = ({ open, handleDrawerClose, theme }) => {
           <ListItem key={item.path} disablePadding sx={{ display: "block" }}>
             <ListItemButton
               onClick={() => {
-                navigate(item.path);
+                handleNavigate(item.path);
               }}
               sx={[
                 {
                   minHeight: 48,
                   px: 2.5,
                   backgroundColor:
-                    location.pathname === item.path
-                      ? theme.palette.mode === "dark"
-                        ? grey[800]
-                        : grey[300]
-                      : null
+                    location.pathname === item.path ? theme.palette.action.selected : null,
+                  transition: "background-color 160ms ease, color 160ms ease",
+                  "&:hover": { backgroundColor: theme.palette.action.hover }
                 },
                 open
                   ? {
@@ -270,18 +279,16 @@ const SideBar = ({ open, handleDrawerClose, theme }) => {
           <ListItem key={item.path} disablePadding sx={{ display: "block" }}>
             <ListItemButton
               onClick={() => {
-                navigate(item.path);
+                handleNavigate(item.path);
               }}
               sx={[
                 {
                   minHeight: 48,
                   px: 2.5,
-                   backgroundColor:
-                    location.pathname === item.path
-                      ? theme.palette.mode === "dark"
-                        ? grey[800]
-                        : grey[300]
-                      : null
+                  backgroundColor:
+                    location.pathname === item.path ? theme.palette.action.selected : null,
+                  transition: "background-color 160ms ease, color 160ms ease",
+                  "&:hover": { backgroundColor: theme.palette.action.hover }
                 },
                 open
                   ? {
@@ -333,12 +340,16 @@ const SideBar = ({ open, handleDrawerClose, theme }) => {
           <ListItem key={item.path} disablePadding sx={{ display: "block" }}>
             <ListItemButton
               onClick={() => {
-                navigate(item.path);
+                handleNavigate(item.path);
               }}
               sx={[
                 {
                   minHeight: 48,
-                  px: 2.5
+                  px: 2.5,
+                  backgroundColor:
+                    location.pathname === item.path ? theme.palette.action.selected : null,
+                  transition: "background-color 160ms ease, color 160ms ease",
+                  "&:hover": { backgroundColor: theme.palette.action.hover }
                 },
                 open
                   ? {

@@ -106,7 +106,7 @@ const Form = () => {
       <TextField  {...register("address 1")} label="Address 1" variant="filled" />
       <TextField  {...register("address 2")} label="Address 2" variant="filled" />
       <TextField
-      {...register("Role")} l
+      {...register("Role")}
         id="filled-select-currency"
         select
         label="Role"

@@ -1,11 +1,12 @@
 import React from 'react'
 import { ResponsiveBar } from "@nivo/bar";
-import { Box, useTheme } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 
 
 
 const Bar = ({isDashbord = false ,data}) => {
     const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <Box sx={{ height: "75vh" }}>
       <ResponsiveBar
@@ -106,7 +107,11 @@ const Bar = ({isDashbord = false ,data}) => {
             tableCellValue: {}
           }
         }}
-        margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
+        margin={
+          isDashbord && isSmallScreen
+            ? { top: 20, right: 8, bottom: 55, left: 35 }
+            : { top: 50, right: 130, bottom: 50, left: 60 }
+        }
         padding={0.3}
         valueScale={{ type: "linear" }}
         indexScale={{ type: "band", round: true }}
@@ -176,17 +181,17 @@ const Bar = ({isDashbord = false ,data}) => {
         legends={[
           {
             dataFrom: "keys",
-            anchor: "bottom-right",
-            direction: "column",
+            anchor: isDashbord && isSmallScreen ? "bottom" : "bottom-right",
+            direction: isDashbord && isSmallScreen ? "row" : "column",
             justify: false,
-            translateX: 120,
-            translateY: 0,
+            translateX: isDashbord && isSmallScreen ? 0 : 120,
+            translateY: isDashbord && isSmallScreen ? 45 : 0,
             itemsSpacing: 2,
-            itemWidth: 100,
+            itemWidth: isDashbord && isSmallScreen ? 55 : 100,
             itemHeight: 20,
             itemDirection: "left-to-right",
             itemOpacity: 0.85,
-            symbolSize: 20,
+            symbolSize: isDashbord && isSmallScreen ? 10 : 20,
             effects: [
               {
                 on: "hover",

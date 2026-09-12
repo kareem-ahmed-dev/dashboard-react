@@ -4,7 +4,7 @@ import { Box, useTheme } from '@mui/material';
 const Pie = ({ data }) => {
     const theme = useTheme();
   return (
-    <Box sx={{ height: "75vh" }}v>
+    <Box sx={{ height: "75vh" }}>
    <ResponsivePie
     data={data}
     margin={{ top: 40, right: 80, bottom: 80, left: 80 }}

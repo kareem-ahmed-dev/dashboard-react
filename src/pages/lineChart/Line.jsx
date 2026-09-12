@@ -1,10 +1,11 @@
 import React from 'react'
-import { Box, useTheme } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 
 import { ResponsiveLine } from "@nivo/line";
 
 const Line = ({data,isDahboard = false}) => {
     const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   return (
       <Box sx={{ height: isDahboard?  "280px"  :  "75vh" }}>
       <ResponsiveLine
@@ -104,7 +105,11 @@ const Line = ({data,isDahboard = false}) => {
         }}
         data={data}
         curve="catmullRom"
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+        margin={
+          isDahboard && isSmallScreen
+            ? { top: 20, right: 8, bottom: 35, left: 35 }
+            : { top: 50, right: 110, bottom: 50, left: 60 }
+        }
         xScale={{ type: "point" }}
         yScale={{
           type: "linear",
@@ -142,17 +147,17 @@ const Line = ({data,isDahboard = false}) => {
         useMesh={true}
         legends={[
           {
-            anchor: "bottom-right",
-            direction: "column",
+            anchor: isDahboard && isSmallScreen ? "bottom" : "bottom-right",
+            direction: isDahboard && isSmallScreen ? "row" : "column",
             justify: false,
-            translateX: 100,
-            translateY: 0,
+            translateX: isDahboard && isSmallScreen ? 0 : 100,
+            translateY: isDahboard && isSmallScreen ? 35 : 0,
             itemsSpacing: 0,
             itemDirection: "left-to-right",
-            itemWidth: 80,
+            itemWidth: isDahboard && isSmallScreen ? 55 : 80,
             itemHeight: 20,
             itemOpacity: 0.75,
-            symbolSize: 12,
+            symbolSize: isDahboard && isSmallScreen ? 8 : 12,
             symbolShape: "circle",
             symbolBorderColor: "rgba(0, 0, 0, .5)",
             effects: [

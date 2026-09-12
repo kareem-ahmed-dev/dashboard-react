@@ -1,15 +1,17 @@
 import React from "react";
 import { Paper, Stack, Typography } from "@mui/material";
 
-const Card = ({ icon , title ,subTitle, chart, increase }) => {
+const Card = ({ icon, title, subTitle, chart, increase }) => {
   return (
     <Paper
       sx={{
-        minWidth: "333px",
-        p:1.5,
+        flex: "1 1 220px",
+        minWidth: { xs: 0, sm: "220px" },
+        width: { xs: "100%", sm: "auto" },
+        p: 1.5,
         display: "flex",
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "center"
       }}
     >
       <Stack direction="column" gap={1}>
@@ -19,8 +21,7 @@ const Card = ({ icon , title ,subTitle, chart, increase }) => {
       </Stack>
       <Stack direction="column">
         {chart}
-        <Typography variant="body2">{increase}</Typography>
-
+        <Typography variant="body2" color="success.main">{increase}</Typography>
       </Stack>
     </Paper>
   );
